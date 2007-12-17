@@ -16,7 +16,6 @@ Summary: Blitz is a graphics manipulation library
 License: GPL
 Group: Development/KDE and Qt
 Source: %name-%version.%revision.tar.bz2
-BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: cmake >= 2.4.5
 BuildRequires: qt4-devel >= 4.3.0
 BuildRequires: pkgconfig
