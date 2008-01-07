@@ -3,14 +3,14 @@
 
 %define branch 1
 %{?_branch: %{expand: %%global branch 1}}
-%define revision 705291
+%define revision 758324
 
 %if %{unstable}
 %define dont_strip 1
 %endif
 
 Name: qimageblitz
-Version: 0.0.4
+Version: 4.0.0
 Release: %mkrel 1 
 Summary: Blitz is a graphics manipulation library 
 License: GPL
