@@ -12,7 +12,7 @@
 Name: qimageblitz
 Version: 4.0.0
 Release: %mkrel 1 
-Summary: Blitz is a graphics manipulation library 
+Summary: Graphics manipulation library 
 License: GPL
 Group: Development/KDE and Qt
 Source: %name-%version.%revision.tar.bz2
