@@ -11,7 +11,7 @@
 
 Name: qimageblitz
 Version: 4.0.0
-Release: %mkrel 2 
+Release: %mkrel 3
 Summary: Graphics manipulation library 
 License: GPL
 Group: Development/KDE and Qt
@@ -75,7 +75,8 @@ Development files for %name.
 %setup -q
 
 %build
-%cmake_qt4
+%cmake_qt4 \
+	-DIB_INSTALL_DIR=%_libdir
 
 %make
 
