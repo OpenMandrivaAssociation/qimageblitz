@@ -41,8 +41,12 @@ Obsoletes: %{_lib}blitz4
 %description -n %libblitz
 Blitz library.
 
+%if %mdkversion < 200900
 %post -n %libblitz -p /sbin/ldconfig
+%endif
+%if %mdkversion < 200900
 %postun -n %libblitz -p /sbin/ldconfig
+%endif
 
 %files -n %libblitz
 %defattr(-,root,root)
