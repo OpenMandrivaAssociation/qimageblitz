@@ -3,7 +3,7 @@
 
 %define branch 1
 %{?_branch: %{expand: %%global branch 1}}
-%define revision 758324
+%define revision 1088367
 
 %if %{unstable}
 %define dont_strip 1
@@ -11,11 +11,11 @@
 
 Name: qimageblitz
 Version: 4.0.0
-Release: %mkrel 5
+Release: %mkrel 6
 Summary: Graphics manipulation library 
 License: GPL
 Group: Development/KDE and Qt
-Source: %name-%version.%revision.tar.bz2
+Source: %name-%version.%revision.tar.xz
 BuildRoot: %{_tmppath}/%{name}-buildroot
 BuildRequires: cmake >= 2.4.5
 BuildRequires: qt4-devel >= 4.3.0
@@ -50,7 +50,8 @@ Blitz library.
 
 %files -n %libblitz
 %defattr(-,root,root)
-%{_libdir}/*.so.*
+%{_libdir}/*.so.4
+%{_libdir}/*.so.4.*
 
 #--------------------------------------------------------------------
 
@@ -81,13 +82,11 @@ Development files for %name.
 %build
 %cmake_qt4 \
 	-DIB_INSTALL_DIR=%_libdir
-
 %make
 
 %install
-cd build && make DESTDIR=%buildroot install
+rm -fr %buildroot
+%makeinstall_std -C build
 
 %clean
 rm -fr %buildroot
-
-
