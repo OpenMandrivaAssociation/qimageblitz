@@ -10,7 +10,7 @@
 
 Name:    qimageblitz
 Version: 0.0.6
-Release: %mkrel 2
+Release: %mkrel 3
 Epoch:   1
 Summary: Graphics manipulation library 
 License: GPL
@@ -83,7 +83,8 @@ Development files for %name.
 %build
 %cmake_qt4 \
 	-DCMAKE_SKIP_RPATH:BOOL=ON \
-	-DIB_INSTALL_DIR=%_libdir
+	-DLIB_INSTALL_DIR=%_libdir \
+	-DINCLUDE_INSTALL_DIR=%_includedir
 %make
 
 %install
