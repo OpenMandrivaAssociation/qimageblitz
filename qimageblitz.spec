@@ -10,7 +10,7 @@
 
 Name:    qimageblitz
 Version: 0.0.6
-Release: %mkrel 3
+Release: %mkrel 4
 Epoch:   1
 Summary: Graphics manipulation library 
 License: GPL
