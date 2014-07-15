@@ -4,6 +4,8 @@
 %define branch 1
 %{?_branch:	%{expand:	%%global branch 1}}
 
+%define git 1393389
+
 %if %{unstable}
 # We cannot use it when debug is set to nil
 #define dont_strip 1
@@ -12,13 +14,23 @@
 Summary:	Graphics manipulation library 
 Name:		qimageblitz
 Epoch:		1
-Version:	0.0.6
-Release:	12
+Release:	1
 License:	GPLv2
 Group:		Development/KDE and Qt
+# svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz
+%if %{git}
+Source0:	%{name}-%{git}.tar.xz
+Version:	0.0.6.%{git}
+%else
 Source0:	%{name}-%{version}.tar.bz2
+Version:	0.0.6
+%endif
 BuildRequires:	cmake >= 2.4.5
+BuildRequires:	qt5-devel
 BuildRequires:	qt4-devel >= 4.3.0
+
+%libpackage qimageblitz 4
+%libpackage qimageblitz 5
 
 %description
 Blitz is a graphics manipulation library.
@@ -28,27 +40,13 @@ Blitz is a graphics manipulation library.
 
 #--------------------------------------------------------------------
 
-%define blitz_major 4
-%define libblitz %mklibname qimageblitz %{blitz_major}
-
-%package -n %{libblitz}
-Summary:	Blitz library
-Group:		System/Libraries
-
-%description -n %{libblitz}
-Blitz library.
-
-%files -n %{libblitz}
-%{_libdir}/libqimageblitz.so.%{blitz_major}*
-
-#--------------------------------------------------------------------
-
 %define libblitzdev %mklibname -d qimageblitz
 
 %package -n %{libblitzdev}
 Summary:	Development files for %{name}
 Group:		Development/KDE and Qt
-Requires:	%{libblitz} = %{EVRD}
+Requires:	%{mklibname qimageblitz 4} = %{EVRD}
+Requires:	%{mklibname qimageblitz 5} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 
 %description -n %{libblitzdev}
@@ -62,15 +60,34 @@ Development files for %{name}.
 #--------------------------------------------------------------------
 
 %prep
-%setup -q
+%setup -q -n %{name}
 
 %build
-%cmake_qt4 \
+%cmake \
+	-DCMAKE_SKIP_RPATH:BOOL=ON \
+	-DLIB_INSTALL_DIR=%{_libdir} \
+	-DINCLUDE_INSTALL_DIR=%{_includedir}
+%make
+
+cd ..
+
+# We can install both versions into the same prefix
+# because the headers are actually identical
+mkdir build-qt4
+cd build-qt4
+cmake .. \
+	-DQT4_BUILD:BOOL=ON \
+	-DCMAKE_INSTALL_PREFIX:PATH=%{_prefix} \
+	-DCMAKE_INSTALL_LIBDIR:PATH=%{_lib} \
+	-DLIB_INSTALL_DIR:PATH=%{_lib} \
 	-DCMAKE_SKIP_RPATH:BOOL=ON \
 	-DLIB_INSTALL_DIR=%{_libdir} \
 	-DINCLUDE_INSTALL_DIR=%{_includedir}
 %make
 
 %install
+%makeinstall_std -C build-qt4
+mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt4.pc
+mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt4.so
 %makeinstall_std -C build
 
