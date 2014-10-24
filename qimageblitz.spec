@@ -14,7 +14,7 @@
 Summary:	Graphics manipulation library 
 Name:		qimageblitz
 Epoch:		1
-Release:	1
+Release:	2
 License:	GPLv2
 Group:		Development/KDE and Qt
 # svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz
@@ -41,21 +41,62 @@ Blitz is a graphics manipulation library.
 #--------------------------------------------------------------------
 
 %define libblitzdev %mklibname -d qimageblitz
+%define libblitz4dev %mklibname -d qimageblitz-qt4
+%define libblitz5dev %mklibname -d qimageblitz-qt5
 
 %package -n %{libblitzdev}
 Summary:	Development files for %{name}
 Group:		Development/KDE and Qt
-Requires:	%{mklibname qimageblitz 4} = %{EVRD}
 Requires:	%{mklibname qimageblitz 5} = %{EVRD}
-Provides:	%{name}-devel = %{EVRD}
+Requires:	%{name}-devel = %{EVRD}
 
 %description -n %{libblitzdev}
 Development files for %{name}.
 
 %files -n %{libblitzdev}
-%{_libdir}/*.so
+%ghost %{_libdir}/libqimageblitz.so
+%ghost %{_libdir}/pkgconfig/qimageblitz.pc
 %{_includedir}/qimageblitz
-%{_libdir}/pkgconfig/*
+
+%package -n %{libblitz4dev}
+Summary:	Development files for the Qt4 version of %{name}
+Group:		Development/KDE and Qt
+Requires:	%{mklibname qimageblitz 4} = %{EVRD}
+Requires:	%{libblitzdev} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
+Provides:	pkgconfig(qimageblitz) = 4.0.0-1
+Conflicts:	pkgconfig(qimageblitz) > 5.0.0-0
+
+%description -n %{libblitz4dev}
+Development files for the Qt4 version of %{name}
+
+%files -n %{libblitz4dev}
+%{_libdir}/libqimageblitz-qt4.so
+%{_libdir}/pkgconfig/qimageblitz-qt4.pc
+
+%post -n %{libblitz4dev}
+ln -sf libqimageblitz-qt4.so %{_libdir}/libqimageblitz.so
+ln -sf qimageblitz-qt4.pc %{_libdir}/pkgconfig/qimageblitz.pc
+
+%package -n %{libblitz5dev}
+Summary:	Development files for the Qt5 version of %{name}
+Group:		Development/KDE and Qt
+Requires:	%{mklibname qimageblitz 5} = %{EVRD}
+Requires:	%{libblitzdev} = %{EVRD}
+Provides:	%{name}-devel = %{EVRD}
+Provides:	pkgconfig(qimageblitz) = 5.0.0-1
+Conflicts:	pkgconfig(qimageblitz) < 5.0.0-0
+
+%description -n %{libblitz5dev}
+Development files for the Qt5 version of %{name}
+
+%files -n %{libblitz5dev}
+%{_libdir}/libqimageblitz-qt5.so
+%{_libdir}/pkgconfig/qimageblitz-qt5.pc
+
+%post -n %{libblitz5dev}
+ln -sf libqimageblitz-qt5.so %{_libdir}/libqimageblitz.so
+ln -sf qimageblitz-qt5.pc %{_libdir}/pkgconfig/qimageblitz.pc
 
 #--------------------------------------------------------------------
 
@@ -90,4 +131,8 @@ cmake .. \
 mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt4.pc
 mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt4.so
 %makeinstall_std -C build
+mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt5.pc
+mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt5.so
 
+touch %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc
+touch %{buildroot}%{_libdir}/libqimageblitz.so
