@@ -1,3 +1,4 @@
+%define debug_package %nil
 %define unstable 1
 %{?_unstable:	%{expand:	%%global unstable 1}}
 
@@ -33,7 +34,9 @@ BuildRequires:	qt5-devel
 BuildRequires:	qt4-devel
 
 %libpackage qimageblitz 4
+%if %{with qt5}
 %libpackage qimageblitz 5
+%endif
 
 %description
 Blitz is a graphics manipulation library.
@@ -45,7 +48,9 @@ Blitz is a graphics manipulation library.
 
 %define libblitzdev %mklibname -d qimageblitz
 %define libblitz4dev %mklibname -d qimageblitz-qt4
+%if %{with qt5}
 %define libblitz5dev %mklibname -d qimageblitz-qt5
+%endif
 
 %package -n %{libblitzdev}
 Summary:	Development files for %{name}
@@ -138,8 +143,8 @@ cmake .. \
 %makeinstall_std -C build-qt4
 mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt4.pc
 mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt4.so
-%makeinstall_std -C build
 %if %{with qt5}
+%makeinstall_std -C build
 mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt5.pc
 mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt5.so
 %endif
