@@ -16,7 +16,7 @@
 Summary:	Graphics manipulation library 
 Name:		qimageblitz
 Epoch:		1
-Release:	3
+Release:	4
 License:	GPLv2
 Group:		Development/KDE and Qt
 # svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz
@@ -74,6 +74,9 @@ Group:		Development/KDE and Qt
 Requires:	%{mklibname qimageblitz 4} = %{EVRD}
 Requires:	%{libblitzdev} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
+%ifarch %arm
+Provides:	devel(libqimageblitz)
+%endif
 Provides:	pkgconfig(qimageblitz) = 4.0.0-1
 Conflicts:	pkgconfig(qimageblitz) > 5.0.0-0
 
