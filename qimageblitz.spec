@@ -16,7 +16,7 @@
 Summary:	Graphics manipulation library 
 Name:		qimageblitz
 Epoch:		1
-Release:	4
+Release:	5
 License:	GPLv2
 Group:		Development/KDE and Qt
 # svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz
