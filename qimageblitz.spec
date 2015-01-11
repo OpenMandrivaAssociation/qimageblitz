@@ -16,7 +16,7 @@
 Summary:	Graphics manipulation library 
 Name:		qimageblitz
 Epoch:		1
-Release:	5
+Release:	6
 License:	GPLv2
 Group:		Development/KDE and Qt
 # svn://anonsvn.kde.org/home/kde/trunk/kdesupport/qimageblitz
@@ -64,8 +64,10 @@ Requires:	%{name}-devel = %{EVRD}
 Development files for %{name}.
 
 %files -n %{libblitzdev}
+%if %{with qt5}
 %ghost %{_libdir}/libqimageblitz.so
 %ghost %{_libdir}/pkgconfig/qimageblitz.pc
+%endif
 %{_includedir}/qimageblitz
 
 %package -n %{libblitz4dev}
@@ -84,12 +86,19 @@ Conflicts:	pkgconfig(qimageblitz) > 5.0.0-0
 Development files for the Qt4 version of %{name}
 
 %files -n %{libblitz4dev}
+%if !%{with qt5}
+%{_libdir}/libqimageblitz.so
+%{_libdir}/pkgconfig/qimageblitz.pc
+%endif
+
+%if %{with qt5}
 %{_libdir}/libqimageblitz-qt4.so
 %{_libdir}/pkgconfig/qimageblitz-qt4.pc
 
 %post -n %{libblitz4dev}
 ln -sf libqimageblitz-qt4.so %{_libdir}/libqimageblitz.so
 ln -sf qimageblitz-qt4.pc %{_libdir}/pkgconfig/qimageblitz.pc
+%endif
 
 %if %{with qt5}
 %package -n %{libblitz5dev}
@@ -144,9 +153,9 @@ cmake .. \
 
 %install
 %makeinstall_std -C build-qt4
+%if %{with qt5}
 mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt4.pc
 mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt4.so
-%if %{with qt5}
 %makeinstall_std -C build
 mv %{buildroot}%{_libdir}/pkgconfig/qimageblitz.pc %{buildroot}%{_libdir}/pkgconfig/qimageblitz-qt5.pc
 mv %{buildroot}%{_libdir}/libqimageblitz.so %{buildroot}%{_libdir}/libqimageblitz-qt5.so
